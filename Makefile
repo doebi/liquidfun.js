@@ -16,7 +16,7 @@ ifeq ($(BUILD), debug)
 	LINK_OPTS = -g4 --llvm-lto 0 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s ASSERTIONS=2 --closure 0  -s DEMANGLE_SUPPORT=1 
 else
 	OPTS = -Os
-	LINK_OPTS =  -O3 --llvm-lto 1 -s NO_FILESYSTEM=1 -s NO_BROWSER=1  --closure 1  --js-transform "python bundle.py"
+	LINK_OPTS =  -O3 --llvm-lto 1 -s NO_FILESYSTEM=1 -s NO_BROWSER=1  --closure 1  --js-transform "python tools/bundle.py"
 endif
 
 OBJECTS += \
@@ -57,6 +57,7 @@ $(ACTIVE)/Box2D/Dynamics/Joints/b2DistanceJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2FrictionJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2GearJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2Joint.bc \
+$(ACTIVE)/Box2D/Dynamics/Joints/b2MotorJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2MouseJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2PrismaticJoint.bc \
 $(ACTIVE)/Box2D/Dynamics/Joints/b2PulleyJoint.bc \

@@ -7,17 +7,17 @@
 PYTHON=$(ENV) python
 ACTIVE=liquidfun/liquidfun/Box2D
 VERSION=v1.1.0
-BUILD:=min
 
-# ===============
+# = min ==============
+BUILD=min
+OPTS = -Os
+LINK_OPTS =  -O3 --llvm-lto 1 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s ASSERTIONS=2 --closure 1  --js-transform "python tools/bundle.py"
 
-ifeq ($(BUILD), debug)
-	OPTS = -O0 -g2
-	LINK_OPTS = -g4 --llvm-lto 0 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s ASSERTIONS=2 --closure 0  -s DEMANGLE_SUPPORT=1 
-else
-	OPTS = -Os
-	LINK_OPTS =  -O3 --llvm-lto 1 -s NO_FILESYSTEM=1 -s NO_BROWSER=1  --closure 1  --js-transform "python tools/bundle.py"
-endif
+# = debug ==============
+# BUILD=debug
+# EMCC_DEBUG=1
+# OPTS = -Os
+# LINK_OPTS = -g4 -s DEMANGLE_SUPPORT=1 -Werror -s ASSERTIONS=2 --llvm-lto 1 -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s ASSERTIONS=2 --closure 1  --js-transform "python tools/bundle.py"
 
 OBJECTS += \
 $(ACTIVE)/Box2D/Collision/b2BroadPhase.bc \
@@ -38,6 +38,7 @@ $(ACTIVE)/Box2D/Common/b2Math.bc \
 $(ACTIVE)/Box2D/Common/b2Settings.bc \
 $(ACTIVE)/Box2D/Common/b2StackAllocator.bc \
 $(ACTIVE)/Box2D/Common/b2Timer.bc \
+$(ACTIVE)/Box2D/Common/b2TrackedBlock.bc \
 $(ACTIVE)/Box2D/Dynamics/b2Body.bc \
 $(ACTIVE)/Box2D/Dynamics/b2ContactManager.bc \
 $(ACTIVE)/Box2D/Dynamics/b2Fixture.bc \

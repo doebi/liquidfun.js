@@ -29,6 +29,12 @@ interface JSContactListener {
 
   void BeginContact(b2Contact contact);
   void EndContact(b2Contact contact);
+
+  void BeginParticleBodyContact(b2ParticleSystem particleSystem, b2ParticleBodyContact particleBodyContact);
+  void EndParticleBodyContact(b2Fixture fixture, b2ParticleSystem particleSystem, long index);
+  void BeginParticleContact(b2ParticleSystem particleSystem, b2ParticleContact particleContact);
+  void EndParticleContact(b2ParticleSystem particleSystem, long indexA, long indexB);
+
   // TODO: Declare another b2ContactListener implementation without PreSolve/PostSolve,
   // for efficiency (otherwise the JS implementations of these functions must get called
   // even if unused).
@@ -46,13 +52,18 @@ interface b2World {
   void DestroyBody(b2Body body);
   b2Joint CreateJoint([Const] b2JointDef def);
   void DestroyJoint(b2Joint joint);
+  b2ParticleSystem CreateParticleSystem([Const] b2ParticleSystemDef def);
+  void DestroyParticleSystem(b2ParticleSystem system);
+  void Step(float timeStep, long velocityIterations, long positionIterations, long particleIterations);
   void Step(float timeStep, long velocityIterations, long positionIterations);
+  long CalculateReasonableParticleIterations(float timeStep);
   void ClearForces();
   void DrawDebugData();
   void QueryAABB(b2QueryCallback callback, [Ref] b2AABB aabb);
   void RayCast(b2RayCastCallback callback, [Ref] b2Vec2 point1, [Ref] b2Vec2 point2);
   b2Body GetBodyList();
   b2Joint GetJointList();
+  b2ParticleSystem GetParticleSystemList();
   b2Contact GetContactList();
   void SetAllowSleeping(boolean flag);
   boolean GetAllowSleeping();
@@ -968,6 +979,8 @@ interface b2ParticleGroup {
 };
 
 interface b2ParticleSystemDef {
+    void b2ParticleSystemDef();
+
     attribute boolean strictContactCheck;
     attribute float density;
     attribute float gravityScale;
@@ -1001,4 +1014,105 @@ interface b2ParticleSystem {
     b2ParticleGroup CreateParticleGroup([Const, Ref] b2ParticleGroupDef def);
     void JoinParticleGroups(b2ParticleGroup groupA, b2ParticleGroup groupB);
     void SplitParticleGroup(b2ParticleGroup group);
+    [Const] b2ParticleGroup GetParticleGroupList();
+    long GetParticleGroupCount();
+    long GetParticleCount();
+    long GetMaxParticleCount();
+    void SetMaxParticleCount(long count);
+    unsigned long GetAllParticleFlags();
+    unsigned long GetAllGroupFlags();
+    void SetPaused(boolean paused);
+    boolean GetPaused();
+    void SetDensity(float density);
+    float GetDensity();
+    void SetGravityScale(float gravityScale);
+    float GetGravityScale();
+    void SetDamping(float damping);
+    float GetDamping();
+    void SetStaticPressureIterations(long iterations);
+    long GetStaticPressureIterations();
+    void SetRadius(float radius);
+    float GetRadius();
+    [Const] b2Vec2 GetPositionBuffer();
+    [Const] b2Vec2 GetVelocityBuffer();
+    [Const] b2ParticleColor GetColorBuffer();
+    // [Const] b2ParticleGroup GetGroupBuffer();
+    // [Const] float GetWeightBuffer();
+    any GetUserDataBuffer();
+    // [Const] unsigned long GetFlagsBuffer();
+    void SetParticleFlags(long index, unsigned long flags);
+    unsigned long GetParticleFlags([Const] long index);
+    // void SetFlagsBuffer(unsigned long buffer, long capacity);
+    // void SetPositionBuffer(b2Vec2 buffer, long capacity);
+    // void SetVelocityBuffer(b2Vec2 buffer, long capacity);
+    // void SetColorBuffer(b2ParticleColor buffer, long capacity);
+    // void SetUserDataBuffer(any buffer, long capacity);
+    // [Value] b2ParticleContact GetContacts();
+    long GetContactCount();
+    [Const] b2ParticleBodyContact GetBodyContacts ();
+    // long GetBodyContactCount();
+    // [Const] b2ParticlePair GetPairs();
+    // long GetPairCount();
+    // [Const] b2ParticleTriad GetTriads();
+    // long GetTriadCount();
+    // void SetStuckThreshold(long iterations);
+    // [Const] long GetStuckCandidates();
+    // long GetStuckCandidateCount();
+    // float ComputeCollisionEnergy();
+    // void SetStrictContactCheck(boolean enabled);
+    // boolean GetStrictContactCheck();
+    // void SetParticleLifetime([Const] long index, [Const] float lifetime);
+    // float GetParticleLifetime([Const] long index);
+    // void SetDestructionByAge([Const] boolean enable);
+    // boolean GetDestructionByAge();
+    // [Const] long GetExpirationTimeBuffer();
+    // float ExpirationTimeToLifetime([Const] long expirationTime);
+    // [Const] long GetIndexByExpirationTimeBuffer();
+    // void ParticleApplyLinearImpulse(long index, [Const, Ref] b2Vec2 impulse);
+    // void ApplyLinearImpulse(long firstIndex, long lastIndex, [Const, Ref] b2Vec2 impulse);
+    // void ParticleApplyForce(long index, [Const, Ref] b2Vec2 force);
+    // void ApplyForce(long firstIndex, long lastIndex, [Const, Ref] b2Vec2 force);
+    // [Value] b2ParticleSystem GetNext();
+    // void QueryAABB(b2QueryCallback callback, [Const, Ref] b2AABB aabb);
+    // void QueryShapeAABB(b2QueryCallback callback, [Const, Ref] b2Shape shape, [Const, Ref] b2Transform xf);
+    // void RayCast(b2RayCastCallback callback, [Const, Ref] b2Vec2 point1, [Const, Ref] b2Vec2 point2);
+    // void ComputeAABB([Const] b2AABB aabb);
 };
+
+interface b2ParticleContact {
+};
+
+interface b2ParticleBodyContact {
+    void b2ParticleBodyContact();
+    attribute long index;
+    attribute b2Body body;
+    attribute b2Fixture fixture;
+    attribute float weight;
+    [Value] attribute b2Vec2 normal;
+    attribute float mass;
+};
+
+interface b2ParticlePair {
+};
+
+interface b2ParticleTriad {
+};
+
+// 
+// [NoDelete]
+// interface b2TrackedBlock {
+//     void GetMemory();
+//     void Allocate(unsigned long size);
+//     //[Value] b2TrackedBlock GetFromMemory(any memory);
+//     void Free(any memory);
+//     // void Free(b2TrackedBlock block);
+// };
+// 
+// interface b2TrackedBlockAllocator {
+//     void b2TrackedBlockAllocator();
+// 
+//     void Allocate(unsigned long size);
+//     void Free(any memory);
+//     void FreeAll();
+//     // [Const, Ref]  b2TypedIntrusiveListNode<b2TrackedBlock> GetList();
+// };

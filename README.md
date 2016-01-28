@@ -16,7 +16,7 @@ Usage
 =====
 
 There are some slight differences in Usage compared to the manual emscripten port provided by Google.<br>
-*more details coming soon*
+*more details coming ~~soon~~*
 
 Thanks
 ======

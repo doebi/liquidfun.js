@@ -3,6 +3,12 @@ liquidfun.js
 
 liquidfun.js is a direct port of the Liquidfun 2D physics engine to JavaScript, using Emscripten. I started this since the JavaScript Port of liquidfun provided by Google was incomplete and manually written. This project is translated directly to JavaScript, without human rewriting, so functionality should be identical to the original Liquidfun.
 
+Download
+========
+http://files.doebi.at/lfjs
+
+To directly play with and test the library you can use my precompiled version, or build it from source as described below.
+
 Building
 ========
 

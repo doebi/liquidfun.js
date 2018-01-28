@@ -5,7 +5,7 @@ liquidfun.js is a direct port of the Liquidfun 2D physics engine to JavaScript, 
 
 Download
 ========
-http://files.doebi.at/lfjs
+https://github.com/doebi/liquidfun.js/releases
 
 To directly play with and test the library you can use my precompiled version, or build it from source as described below.
 
